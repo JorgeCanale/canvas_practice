@@ -1,4 +1,4 @@
-let canvas = document.getElementById("canvas1");
+let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
 ctx.lineWidth = 10;
@@ -8,6 +8,12 @@ ctx.fillStyle = "black";
 
 ctx.strokeRect(75, 140, 150, 110);
 
+
+
+if(ctx.isContextLost()){
+    console.log('the context is lost');
+    
+};
 
 //practicing som things
 
