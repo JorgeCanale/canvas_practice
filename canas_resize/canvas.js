@@ -72,9 +72,7 @@ ctx.strokeStyle = "violet";
 ctx.stroke();
 
 function randomXY(min,max){
-    let position = Math.floor(Math.random() * (max - min + 1) + min);
-    console.log(position);
-    
+    let position = Math.floor(Math.random() * (max - min + 1) + min);    
     position > 0 ? position = position : position = -position;
 
     return position;
