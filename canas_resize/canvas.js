@@ -7,6 +7,13 @@ canvas.height = window.innerHeight;
 //una posicion x, y, width, height. Empezando su coordenada desde la parte superior
 //izquierda del canvas 
 
+function randomXY(min,max){
+    let position = Math.floor(Math.random() * (max - min + 1) + min);    
+    position > 0 ? position = position : position = -position;
+
+    return position;
+}
+
 function randomColor(){
     let red = Math.random() * 255;
     let green = Math.random() * 255;
@@ -16,6 +23,42 @@ function randomColor(){
 }
 
 let ctx = canvas.getContext("2d");
+
+function Circle (x,y,radius,dx,dy,color){
+    this.x = x;
+    this.y = y;
+    this.dx =dx;
+    this.dy = dy;
+    this.radius = radius;
+    this.color = color
+
+    this.draw = function(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, Math.PI * 2, false);
+        ctx.strokeStyle = this.color;
+        ctx.stroke();
+     };
+
+     this.update = function(){
+
+        
+            if(this.x + this.radius > innerWidth || this.x - this.radius < 0){
+            this.dx = -this.dx;
+        };
+
+        if(this.y + this.radius > innerHeight || this.y - this.radius < 0){
+            this.dy = -this.dy
+        };
+
+            this.x += this.dx;
+            this.y += this.dy;
+
+            this.draw()
+     };
+}
+
+
+
 
 // ctx.fillStyle = randomColor();
 
@@ -66,69 +109,67 @@ let ctx = canvas.getContext("2d");
 // };
 
 
-ctx.beginPath();
-ctx.arc(400,150,30, 0, Math.PI * 2, false);
-ctx.strokeStyle = "violet";
-ctx.stroke();
-
-function randomXY(min,max){
-    let position = Math.floor(Math.random() * (max - min + 1) + min);    
-    position > 0 ? position = position : position = -position;
-
-    return position;
-}
 
 
 let radius = 30;
-let x = randomXY(radius, (innerWidth - 30));
-let y = randomXY(radius, (innerHeight - 30));
 let dx = 5;
 let dy = 5;
 let bounce = 0;
 let increaseSpeed = false;
 
-let color = randomColor();
+
+let circles = [];
+
+
+for (let j = 0; j < 100; j++) {
+    let rx = randomXY(radius, (innerWidth - 30));
+    let ry = randomXY(radius, (innerHeight - 30));
+    let rColor = randomColor()
+    const circle = new Circle(rx,ry,radius,dx,dy,rColor);
+    circles.push(circle)
+}
 
 function animate(){
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
-    
-    ctx.beginPath();
-    ctx.arc(x, y, radius, Math.PI * 2, false);
-
-    ctx.strokeStyle = "blue";
-    ctx.stroke();
-
-    if(x + radius > innerWidth || x - radius < 0){
-        dx = -dx;
-        bounce++;
-    };
-
-    if(y + radius > innerHeight || y - radius < 0){
-        dy = -dy
-        bounce++;
-    };
-
-    if(bounce >= 2){
-        bounce = 0;       
-         if(dx > 0){
-            dx++;
-         }else{
-            dx--
-         };
-         if(dy > 0){
-            dy++
-         }else{
-            dy--
-         };     
+    for (let i = 0; i < circles.length; i++) {
+         circles[i].draw();
+         circles[i].update();
     }
-
     
-
-    x += dx;
-    y += dy;
 };
 
+    //on bounce increase speed logic
+    // if(bounce >= 2){
+    //     bounce = 0;     
+    //      if(dx > 0){
+    //         dx++;
+    //      }else{
+    //         dx--
+    //      };
+    //      if(dy > 0){
+    //         dy++
+    //      }else{
+    //         dy--
+    //      };     
+    // };
+
+// animate();
 
 
- //animate();
+    // let i = 1;
+    // let j = 1;
+
+    // ctx.beginPath();
+    // let xx = 25 + i * 50; // x coordinate
+    // let yy = 25 + i * 50; // y coordinate
+    // let radius2 = 20; // Arc radius
+    // let startAngle = i; // Starting point on circle
+    // let endAngle = Math.PI + (Math.PI * i) / 2; // End point on circle
+    // let counterclockwise = j % 2 === 1; // Draw counterclockwise
+
+    // console.log(endAngle);
+    // ctx.arc(xx, yy, radius2, startAngle, endAngle, true);
+
+    //   ctx.stroke();
+
