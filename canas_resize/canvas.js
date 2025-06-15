@@ -1,11 +1,8 @@
 let canvas = document.querySelector("canvas");
 
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
-// el metodo fillRect permite rellenar un rectangulo en el canvas tomando como parametros
-//una posicion x, y, width, height. Empezando su coordenada desde la parte superior
-//izquierda del canvas 
 
 let mouse = {
     x: undefined,
@@ -15,14 +12,27 @@ let mouse = {
 let maxRadius = 40;
 let minRadius = 2;
 
+let myColors = [
+    '#D6D58E',
+    '#DBF227',
+    '#9FC131',
+    '#005C53'
+];
+
 window.addEventListener('mousemove', function(event){
     mouse.x = event.x;
     mouse.y = event.y;
 
 });
 
+window.addEventListener('resize', function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+});
+
 function randomXY(min,max){
-    let position = Math.floor(Math.random() * (max - min + 1) + min);    
+    let position = Math.floor(Math.random() * (max - min * 2) + min);    
     position > 0 ? position = position : position = -position;
 
     return position;
@@ -41,17 +51,19 @@ let ctx = canvas.getContext("2d");
 function Circle (x,y,radius,dx,dy,color){
     this.x = x;
     this.y = y;
-    this.dx =dx;
+    this.dx = dx;
     this.dy = dy;
     this.radius = radius;
     this.oR = radius;
-    this.color = color;
+    this.color = myColors[Math.floor(Math.random() * myColors.length)];
 
     this.draw = function(){
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, Math.PI * 2, false);
         ctx.strokeStyle = this.color;
         ctx.stroke();
+        ctx.fillStyle = this.color;
+        ctx.fill();
      };
 
      this.update = function(){
@@ -133,27 +145,32 @@ function Circle (x,y,radius,dx,dy,color){
 // };
 
 
-
-
 let radius = 30;
-let dx = (Math.random() -0.5); 
-let dy = (Math.random() -0.5);
 let bounce = 0;
 let increaseSpeed = false;
 
 
 let circles = [];
+let amountOfCircles = 350;
+
+function init (){
+
+    circles = [];
+
+    for (let j = 0; j < amountOfCircles; j++) {
+        let dx = (Math.random() - 0.5); 
+        let dy = (Math.random() - 0.5);
+        let rx = randomXY(radius, (innerWidth - 30));
+        let ry = randomXY(radius, (innerHeight - 30));
+        let randomRadius = (Math.floor(Math.random() *(7 - 3 + 1) + 3));
+        let rColor = "white"
+        const circle = new Circle(rx,ry,randomRadius,dx,dy,rColor);
+        circles.push(circle)
+
+            };
+        };
 
 
-for (let j = 0; j < 100; j++) {
-    let rx = randomXY(radius, (innerWidth - 30));
-    let ry = randomXY(radius, (innerHeight - 30));
-    let randomRadius = (Math.floor(Math.random() *(7 - 3 + 1) + 3));
-    let rColor = "white"
-    const circle = new Circle(rx,ry,randomRadius,dx,dy,rColor);
-    circles.push(circle)
-
-}
 
 function animate(){
     requestAnimationFrame(animate);
@@ -161,8 +178,7 @@ function animate(){
     for (let i = 0; i < circles.length; i++) {
          circles[i].draw();
          circles[i].update();
-         ctx.fillStyle = "white";
-         ctx.fill();
+
     }
     
 };
@@ -182,8 +198,8 @@ function animate(){
     //      };     
     // };
 
- animate();
-
+init();
+animate();
 
     // let i = 1;
     // let j = 1;
