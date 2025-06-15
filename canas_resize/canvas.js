@@ -7,6 +7,20 @@ canvas.height = window.innerHeight;
 //una posicion x, y, width, height. Empezando su coordenada desde la parte superior
 //izquierda del canvas 
 
+let mouse = {
+    x: undefined,
+    y: undefined,
+}
+
+let maxRadius = 40;
+let minRadius = 2;
+
+window.addEventListener('mousemove', function(event){
+    mouse.x = event.x;
+    mouse.y = event.y;
+
+});
+
 function randomXY(min,max){
     let position = Math.floor(Math.random() * (max - min + 1) + min);    
     position > 0 ? position = position : position = -position;
@@ -30,7 +44,8 @@ function Circle (x,y,radius,dx,dy,color){
     this.dx =dx;
     this.dy = dy;
     this.radius = radius;
-    this.color = color
+    this.oR = radius;
+    this.color = color;
 
     this.draw = function(){
         ctx.beginPath();
@@ -50,10 +65,19 @@ function Circle (x,y,radius,dx,dy,color){
             this.dy = -this.dy
         };
 
+        if(mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 &&
+             mouse.y - this.y > -50){
+            if(this.radius < maxRadius){
+                this.radius += 1;
+            };
+        }else if( this.radius > this.oR){
+            this.radius -=1
+        };
+
             this.x += this.dx;
             this.y += this.dy;
 
-            this.draw()
+            this.draw();
      };
 }
 
@@ -112,8 +136,8 @@ function Circle (x,y,radius,dx,dy,color){
 
 
 let radius = 30;
-let dx = 5;
-let dy = 5;
+let dx = (Math.random() -0.5); 
+let dy = (Math.random() -0.5);
 let bounce = 0;
 let increaseSpeed = false;
 
@@ -124,9 +148,11 @@ let circles = [];
 for (let j = 0; j < 100; j++) {
     let rx = randomXY(radius, (innerWidth - 30));
     let ry = randomXY(radius, (innerHeight - 30));
-    let rColor = randomColor()
-    const circle = new Circle(rx,ry,radius,dx,dy,rColor);
+    let randomRadius = (Math.floor(Math.random() *(7 - 3 + 1) + 3));
+    let rColor = "white"
+    const circle = new Circle(rx,ry,randomRadius,dx,dy,rColor);
     circles.push(circle)
+
 }
 
 function animate(){
@@ -135,6 +161,8 @@ function animate(){
     for (let i = 0; i < circles.length; i++) {
          circles[i].draw();
          circles[i].update();
+         ctx.fillStyle = "white";
+         ctx.fill();
     }
     
 };
@@ -154,7 +182,7 @@ function animate(){
     //      };     
     // };
 
-// animate();
+ animate();
 
 
     // let i = 1;
