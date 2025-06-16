@@ -40,11 +40,11 @@ function randomXY(min,max){
 
 function Ball (x,y,radius,dx,dy,color){
     this.x = x;
-    this.y = y;
+    this.y = 131.0889;
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
-    this.maxHeigh = y - radius;
+    this.maxHeigh = 131.0889 - radius;
 
     this.color = color;
 
@@ -55,23 +55,26 @@ function Ball (x,y,radius,dx,dy,color){
         ctx.stroke();
         ctx.fillStyle = this.color;
         ctx.fill();
+        console.log("dibujando");
+        
      };
 
      this.update = function(){
 
         if(this.x + this.radius > innerWidth || this.x - this.radius < 0){
-            this.dx = -this.dx * 0.9;
-            console.log(this.dx);   
+            this.dx = -this.dx * friction; 
         }
 
-        if(this.y + this.radius > innerHeight || this.y -this.radius < this.maxHeigh){            
+        if(this.y + this.radius > innerHeight || this.y - this.radius < this.maxHeigh){            
             this.dy = -this.dy * friction;
+            this.dx = this.dx * friction;
         }else{
-            this.dy += dy;
+            this.dy += 1;
         }
 
 
-        this.x += this.dx; 
+        this.x += this.dx;
+        console.log(`dy: ${this.dy} --- y: ${this.y} --- inner height: ${innerHeight}`);
         this.y += this.dy;
         this.draw();
      };
