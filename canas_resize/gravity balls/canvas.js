@@ -40,11 +40,11 @@ function randomXY(min,max){
 
 function Ball (x,y,radius,dx,dy,color){
     this.x = x;
-    this.y = 131.0889;
+    this.y = y;
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
-    this.maxHeigh = 131.0889 - radius;
+    this.maxHeigh = y - radius;
 
     this.color = color;
 
@@ -55,26 +55,32 @@ function Ball (x,y,radius,dx,dy,color){
         ctx.stroke();
         ctx.fillStyle = this.color;
         ctx.fill();
-        console.log("dibujando");
         
      };
 
      this.update = function(){
 
-        if(this.x + this.radius > innerWidth || this.x - this.radius < 0){
+        if(this.x + this.radius >= innerWidth || this.x - this.radius <= 0){
+            if(this.x + this.radius > innerWidth){
+                this.x = innerWidth - this.radius;
+            }
             this.dx = -this.dx * friction; 
         }
 
-        if(this.y + this.radius > innerHeight || this.y - this.radius < this.maxHeigh){            
-            this.dy = -this.dy * friction;
-            this.dx = this.dx * friction;
+        if(this.y + this.radius >= innerHeight || this.y - this.radius <= 0){
+            if(this.y + this.radius > innerHeight){
+                this.y = innerHeight - this.radius;
+                this.dy = -this.dy * friction;
+                this.maxHeigh = y - Math.abs(this.dy) * 10;
+            }
         }else{
             this.dy += 1;
         }
 
 
+        console.log(`Pos: (${this.x}, ${this.y}) - Vel: dx=${this.dx}, dy=${this.dy} - MaxAltura=${this.maxHeigh}`);
+
         this.x += this.dx;
-        console.log(`dy: ${this.dy} --- y: ${this.y} --- inner height: ${innerHeight}`);
         this.y += this.dy;
         this.draw();
      };
@@ -99,5 +105,5 @@ function animate(){
 };
 
     
-// init();
-// animate();
+init();
+animate();
