@@ -5,10 +5,8 @@ let ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let radius = 30;
 let friction = 0.9;
 let myColors = [
-
     '#D6D58E',
     '#DBF227',
     '#9FC131',
@@ -23,18 +21,15 @@ window.addEventListener('resize', function(){
 });
 
 function randomColor(){
-    let red = Math.random() * 255;
-    let green = Math.random() * 255;
-    let blue = Math.random() * 255;
-    let Color = `rgb(${red} ${green} ${blue})`;
-    return Color;
+    let color = Math.floor(Math.random() * (balls.length - 0 ) + 0);
+    return myColors[color];
 }
 
-function randomXY(min,max){
-    let position = Math.floor(Math.random() * (max - min * 2) + min);    
-    position > 0 ? position = position : position = -position;
+function randomNumber (min,max){
+    let number = Math.floor(Math.random() * (max - min) + min);    
+    number > 0 ? number = number : number = -number;
 
-    return position;
+    return number;
 }
 
 
@@ -51,7 +46,7 @@ function Ball (x,y,radius,dx,dy,color){
     this.draw = function(){
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, Math.PI * 2, false);
-        ctx.strokeStyle = this.color;
+        ctx.strokeStyle = "black";
         ctx.stroke();
         ctx.fillStyle = this.color;
         ctx.fill();
@@ -77,8 +72,9 @@ function Ball (x,y,radius,dx,dy,color){
             this.dy += 1;
         }
 
+        if(this.y)
 
-        console.log(`Pos: (${this.x}, ${this.y}) - Vel: dx=${this.dx}, dy=${this.dy} - MaxAltura=${this.maxHeigh}`);
+         console.log(`Pos: (${this.x}, ${this.y}) - Vel: dx=${this.dx}, dy=${this.dy} - MaxAltura=${this.maxHeigh}`);
 
         this.x += this.dx;
         this.y += this.dy;
@@ -86,22 +82,38 @@ function Ball (x,y,radius,dx,dy,color){
      };
 }
 
+let balls = [];
 let ball;
 
 function init (){
-    let dx = (Math.random() + 3); 
-    let dy = (Math.random() + 0.9);
-    ball = new Ball(randomXY(30,innerWidth), randomXY(30,innerHeight),radius,dx,dy, myColors[2]);
-        };
+    // balls = [];
+    // for (let i = 0; i < 50; i++) {
+    //         let dx = (Math.random() + 3); 
+    //         let dy = (Math.random() + 0.9);
+    //         let color = randomColor();
+    //         let radius =  randomNumber(18,30);
+    //         let ball = new Ball(randomNumber(30,innerWidth), randomNumber(30,innerHeight),radius,dx,dy, color);
+    //         balls.push(ball);
+    //     }; 
+
+                let dx = (Math.random() + 3); 
+            let dy = (Math.random() + 0.9);
+            let color = randomColor();
+            let radius =  randomNumber(18,30);
+            ball = new Ball(randomNumber(30,innerWidth), randomNumber(30,innerHeight),radius,dx,dy, color);
+    }
 
 
 
 function animate(){
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
+    // for (let i = 0; i < balls.length; i++) {
+    //     balls[i].draw()
+    //     balls[i].update()
+    // }
     ball.draw();
-    ball.update();
-    
+    ball.update()
 };
 
     
