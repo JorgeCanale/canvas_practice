@@ -55,27 +55,31 @@ function Ball (x,y,radius,dx,dy,color){
 
      this.update = function(){
 
-        if(this.x + this.radius >= innerWidth || this.x - this.radius <= 0){
-            if(this.x + this.radius > innerWidth){
-                this.x = innerWidth - this.radius;
-            }
-            this.dx = -this.dx * friction; 
+        if(this.x + this.radius > innerWidth || this.x - this.radius <= 0){
+            this.dx = -this.dx * friction;
+            friction -= 0.05; 
+        }else{
+            this
         }
 
-        if(this.y + this.radius >= innerHeight || this.y - this.radius <= 0){
-            if(this.y + this.radius > innerHeight){
+        if(this.y + this.radius >= innerHeight){
                 this.y = innerHeight - this.radius;
                 this.dy = -this.dy * friction;
-                this.maxHeigh = y - Math.abs(this.dy) * 10;
-            }
+                friction -= 0.05
+                if(this.maxHeigh > innerHeight - this.radius){
+                    this.maxHeigh = innerHeight -this.radius;
+                    this.dy = 0;
+                }else{
+                    this.maxHeigh +=  Math.floor(Math.abs(this.dy));
+                }
+               //console.log(`Altura: ${this.y} Altura Maxima: ${this.maxHeigh} Velocidad: ${this.dy} Radius: ${this.radius}`)
+            
         }else{
             this.dy += 1;
         }
 
-        if(this.y)
-
-         console.log(`Pos: (${this.x}, ${this.y}) - Vel: dx=${this.dx}, dy=${this.dy} - MaxAltura=${this.maxHeigh}`);
-
+        console.log(`posicion: ${this.x} velocidad: ${this.dx}`);
+        
         this.x += this.dx;
         this.y += this.dy;
         this.draw();
@@ -96,7 +100,7 @@ function init (){
     //         balls.push(ball);
     //     }; 
 
-                let dx = (Math.random() + 3); 
+            let dx = (Math.random() + 3); 
             let dy = (Math.random() + 0.9);
             let color = randomColor();
             let radius =  randomNumber(18,30);
