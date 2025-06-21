@@ -48,7 +48,6 @@ function Ball (x,y,radius,dx,dy,color,fric){
     this.radius = radius;
     this.maxHeigh = y - radius;
     this.energy = fric; 
-
     this.color = color;
 
     this.draw = function(){
@@ -90,6 +89,12 @@ function Ball (x,y,radius,dx,dy,color,fric){
             this.dy += 1;
         }
 
+        if(Math.abs(this.dx) > 0.1 && this.y == innerHeight - this.radius){
+            this.energy = reduceFriction(this.dx , this.energy);
+            this.dx = this.dx * this.energy;
+        }else if(Math.abs(this.dx) <= 0.1){
+            this.dx  = 0;
+        }
         
         
         this.x += this.dx;
@@ -104,7 +109,7 @@ let ball;
 function init (){
      balls = [];
     for (let i = 0; i < 50; i++) {
-            let dx = (Math.random() + 3); 
+            let dx = (Math.random() + 10); 
             let dy = (Math.random() + 0.9);
             let color = randomColor();
             let radius =  randomNumber(18,30);
