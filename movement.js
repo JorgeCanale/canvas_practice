@@ -20,9 +20,15 @@ if(ctx.isContextLost()){
 //muro
 ctx.strokeRect(75, 140, 150, 110);
 
+
 //puerta
 ctx.fillRect(130, 190, 40, 60);
 
+ctx.beginPath();
+ctx.moveTo(130, 160);
+ctx.lineTo(140, 160);
+ctx.closePath();
+ctx.stroke();
 
 //Casa
 ctx.beginPath();
